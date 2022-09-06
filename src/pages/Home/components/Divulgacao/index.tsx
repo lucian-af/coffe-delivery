@@ -7,12 +7,14 @@ import {
   Vantagem,
   BannerImg,
   DivulgacaoContainer,
+  Filter,
 } from "./styles";
 import Banner from "../../../../assets/banner.svg";
 
 export function Divulgacao() {
   return (
     <DivulgacaoContainer>
+      <Filter />
       <Overview>
         <Slogan>
           <h1>Encontre o café perfeito para qualquer hora do dia</h1>

@@ -7,7 +7,7 @@ export function Header() {
   return (
     <HeaderContainer>
       <NavLink to="/">
-        <img src={Logo} alt="" />
+        <img src={Logo} alt="" width={85} height={40} />
       </NavLink>
       <nav>
         <UserLocation>

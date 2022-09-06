@@ -1,12 +1,43 @@
 import styled from "styled-components";
 
-export const DivulgacaoContainer = styled.div`
+export const DivulgacaoContainer = styled.section`
   display: flex;
+  padding: 5.75rem 0;
 
-  @media only screen and (max-width: 1400px) {
+  position: relative;
+
+  @media only screen and (max-width: 1366px) {
     flex-direction: column;
     align-items: center;
   }
+`;
+
+export const Filter = styled.div`
+  position: absolute;
+
+  background-image: linear-gradient(
+    240deg,
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["orange-400"]},
+    ${(props) => props.theme["orange-400"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["orange-400"]},
+    ${(props) => props.theme["orange-400"]},
+    ${(props) => props.theme["orange-400"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]},
+    ${(props) => props.theme["purple-500"]}
+  );
+
+  opacity: 0.12;
+  filter: blur(3rem);
+
+  width: 100%;
+  height: calc(100% - 160px);
 `;
 
 export const Overview = styled.div`
@@ -15,7 +46,7 @@ export const Overview = styled.div`
   gap: 4.125rem;
   order: 1;
 
-  @media only screen and (max-width: 1400px) {
+  @media only screen and (max-width: 1366px) {
     order: 2;
 
     text-align: center;
@@ -48,7 +79,7 @@ export const BannerImg = styled.img`
   height: 360px;
   order: 2;
 
-  @media only screen and (max-width: 1400px) {
+  @media only screen and (max-width: 1366px) {
     order: 1;
   }
 
