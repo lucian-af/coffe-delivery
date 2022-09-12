@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const HomeContainer = styled.main`
   display: flex;
   flex-direction: column;
+  user-select: none;
 
   @media only screen and (max-width: 599px) {
     padding: 0;
@@ -119,7 +120,39 @@ export const Descricao = styled.div`
 export const OpcaoEscolher = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   padding: 0 1.5rem;
+
+  form {
+    display: flex;
+    gap: 0.5rem;
+  }
+`;
+
+export const ActionForm = styled.span`
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 6px;
+
+  font-size: ${(props) => props.theme["font-20"]};
+
+  background: ${(props) => props.theme["purple-700"]};
+  color: ${(props) => props.theme["gray-100"]};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: ${(props) => props.theme["purple-500"]};
+  }
 `;
 
 export const Preco = styled.div`

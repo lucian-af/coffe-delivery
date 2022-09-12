@@ -1,4 +1,5 @@
 import {
+  ActionForm,
   Cardapio,
   Descricao,
   Etiqueta,
@@ -17,6 +18,7 @@ import CafeExpresso from "../../assets/cardapio/Type=Expresso.svg";
 import CafeExpressoCremoso from "../../assets/cardapio/Type=Expresso Cremoso.svg";
 import CafeExpressoGelado from "../../assets/cardapio/Type=Café Gelado.svg";
 import CafeCubano from "../../assets/cardapio/Type=Cubano.svg";
+import { Contador } from "../../components/Contador";
 
 enum TipoCafe {
   tradicional = "TRADICIONAL",
@@ -122,16 +124,10 @@ export function Home() {
                     <span>{currencyFormatter(cafe.valor)}</span>
                   </Preco>
                   <form action="">
-                    <input
-                      type="number"
-                      placeholder="0"
-                      step={1}
-                      min={0}
-                      max={60}
-                    />
-                    <button type="submit">
-                      <ShoppingCart width={22} />
-                    </button>
+                    <Contador />
+                    <ActionForm>
+                      <ShoppingCart weight="fill" />
+                    </ActionForm>
                   </form>
                 </OpcaoEscolher>
               </Opcao>
