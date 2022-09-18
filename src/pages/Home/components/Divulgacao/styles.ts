@@ -60,7 +60,7 @@ export const Slogan = styled.div`
   gap: 1rem;
 
   h1 {
-    font-family: "Baloo 2", sans-serif;
+    font-family: ${(props) => props.theme["font-special"]};
     line-height: 1.3;
     font-size: ${(props) => props.theme["font-48"]};
   }

@@ -2,8 +2,13 @@ import { Minus, Plus } from "phosphor-react";
 import { useState } from "react";
 import { Action, Container, Input } from "./styles";
 
-export function Contador() {
-  const [quantidade, setQuantidade] = useState(0);
+type ContadorProps = {
+  valor?: number;
+  height?: string;
+};
+
+export function Contador({ valor = 0, height = "38px" }: ContadorProps) {
+  const [quantidade, setQuantidade] = useState(valor);
 
   function aumentar() {
     setQuantidade((state) => state + 1);
@@ -15,7 +20,7 @@ export function Contador() {
   }
 
   return (
-    <Container>
+    <Container height={height}>
       <Action>
         <Minus width={14} onClick={diminuir} />
       </Action>

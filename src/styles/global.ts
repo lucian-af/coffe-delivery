@@ -7,6 +7,11 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  &:focus {
+    outline: transparent;
+    box-shadow: 0 0 0 2px ${(props) => props.theme["orange-500"]};
+  }
+
   body {
     background: ${(props) => props.theme["white-100"]};
     color: ${(props) => props.theme["brown-500"]};
@@ -14,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body, input, textarea, button {
-    font-family: 'Roboto', sans-serif;
+    font-family: ${(props) => props.theme["font-default"]};
     font-weight: 400;
     font-size: ${(props) => props.theme["font-16"]};
   }

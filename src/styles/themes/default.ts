@@ -21,6 +21,9 @@ export const defaultTheme = {
   white: "#FFF",
   "white-100": "#FAFAFA",
 
+  "font-special": "'Baloo 2', sans-serif",
+  "font-default": "Roboto, sans-serif",
+
   /** 
    0.625rem = 10px
   */

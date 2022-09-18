@@ -32,8 +32,3 @@ export const UserLocation = styled(BaseLink)`
     color: ${(props) => props.theme["purple-700"]};
   }
 `;
-
-export const Checkout = styled(BaseLink)`
-  background: ${(props) => props.theme["orange-300"]};
-  color: ${(props) => props.theme["orange-700"]};
-`;

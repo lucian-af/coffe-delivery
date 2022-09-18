@@ -98,7 +98,7 @@ export const Descricao = styled.div`
   gap: 0.5rem;
 
   h1 {
-    font-family: "Baloo 2", sans-serif;
+    font-family: ${(props) => props.theme["font-special"]};
     font-size: ${(props) => props.theme["font-20"]};
     color: ${(props) => props.theme["brown-700"]};
     font-weight: 700;
@@ -130,33 +130,8 @@ export const OpcaoEscolher = styled.div`
   }
 `;
 
-export const ActionForm = styled.span`
-  width: 38px;
-  height: 38px;
-
-  border: none;
-  border-radius: 6px;
-
-  font-size: ${(props) => props.theme["font-20"]};
-
-  background: ${(props) => props.theme["purple-700"]};
-  color: ${(props) => props.theme["gray-100"]};
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-
-  transition: background-color 0.2s;
-
-  &:hover {
-    background: ${(props) => props.theme["purple-500"]};
-  }
-`;
-
 export const Preco = styled.div`
-  font-family: "Baloo 2", sans-serif;
+  font-family: ${(props) => props.theme["font-special"]};
   font-size: ${(props) => props.theme["font-24"]};
   font-weight: 800;
   line-height: 1.3;

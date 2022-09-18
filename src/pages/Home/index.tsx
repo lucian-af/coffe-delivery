@@ -1,5 +1,4 @@
 import {
-  ActionForm,
   Cardapio,
   Descricao,
   Etiqueta,
@@ -11,7 +10,6 @@ import {
   OpcaoEscolher,
   Preco,
 } from "./styles";
-import { ShoppingCart } from "phosphor-react";
 import { Divulgacao } from "./components/Divulgacao";
 import CafeAmericano from "../../assets/cardapio/Type=Americano.svg";
 import CafeExpresso from "../../assets/cardapio/Type=Expresso.svg";
@@ -19,6 +17,8 @@ import CafeExpressoCremoso from "../../assets/cardapio/Type=Expresso Cremoso.svg
 import CafeExpressoGelado from "../../assets/cardapio/Type=Café Gelado.svg";
 import CafeCubano from "../../assets/cardapio/Type=Cubano.svg";
 import { Contador } from "../../components/Contador";
+import { currencyFormatterBR } from "../../helpers/CurrencyFormatter";
+import { CarrinhoItems } from "../../components/CarrinhoItems";
 
 enum TipoCafe {
   tradicional = "TRADICIONAL",
@@ -82,19 +82,6 @@ const cafes: Cafe[] = [
 ];
 
 export function Home() {
-  function currencyFormatter(value: number) {
-    if (!Number(value)) return "";
-
-    const amount = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    })
-      .format(value)
-      .replace("R$", "");
-
-    return `${amount}`;
-  }
-
   return (
     <HomeContainer>
       <Divulgacao />
@@ -121,13 +108,20 @@ export function Home() {
 
                 <OpcaoEscolher>
                   <Preco>
-                    <span>{currencyFormatter(cafe.valor)}</span>
+                    <span>
+                      {currencyFormatterBR(cafe.valor, {
+                        replace: true,
+                        replaceSearchValue: "R$",
+                        replaceValue: "",
+                      })}
+                    </span>
                   </Preco>
                   <form action="">
                     <Contador />
-                    <ActionForm>
-                      <ShoppingCart weight="fill" />
-                    </ActionForm>
+                    <CarrinhoItems
+                      color="purple-700"
+                      mostrarTotalItens={false}
+                    />
                   </form>
                 </OpcaoEscolher>
               </Opcao>
