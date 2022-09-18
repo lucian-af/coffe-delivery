@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const DivulgacaoContainer = styled.section`
   display: flex;
+  justify-content: space-around;
   padding: 5.75rem 0;
 
   position: relative;
@@ -16,20 +17,8 @@ export const Filter = styled.div`
   position: absolute;
 
   background-image: linear-gradient(
-    240deg,
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["purple-500"]},
+    to left,
     ${(props) => props.theme["orange-400"]},
-    ${(props) => props.theme["orange-400"]},
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["orange-400"]},
-    ${(props) => props.theme["orange-400"]},
-    ${(props) => props.theme["orange-400"]},
-    ${(props) => props.theme["purple-500"]},
-    ${(props) => props.theme["purple-500"]},
     ${(props) => props.theme["purple-500"]}
   );
 

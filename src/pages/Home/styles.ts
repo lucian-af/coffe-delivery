@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const HomeContainer = styled.main`
   display: flex;
   flex-direction: column;
-  user-select: none;
 
   @media only screen and (max-width: 599px) {
     padding: 0;
