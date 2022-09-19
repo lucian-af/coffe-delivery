@@ -21,6 +21,11 @@ import { PedidoItem } from "./components/PedidoItem";
 import CafeAmericano from "../../assets/cardapio/Type=Americano.svg";
 import { currencyFormatterBR } from "../../helpers/CurrencyFormatter";
 import { useNavigate } from "react-router-dom";
+import {
+  FormasPagamento,
+  formasPagamento,
+  OpcaoPagamento,
+} from "../../data/data";
 
 export function Checkout() {
   const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] =
@@ -35,6 +40,16 @@ export function Checkout() {
 
   function handleConfirmarPedido() {
     navigate("/success", { replace: true });
+  }
+
+  function renderCardOpcaoPagamento(opcaoPagamento: OpcaoPagamento) {
+    switch (opcaoPagamento.formaPagamento) {
+      case FormasPagamento.CartaoCredito:
+      case FormasPagamento.CartaoDebito:
+        return <CreditCard size={16} color={defaultTheme["purple-500"]} />;
+      case FormasPagamento.Dinheiro:
+        return <Money size={16} color={defaultTheme["purple-500"]} />;
+    }
   }
 
   return (
@@ -70,20 +85,17 @@ export function Checkout() {
           </SubTitulo>
 
           <CardsPagamento>
-            <FormaPagamento
-              descricao="cartão de crédito"
-              selecionada={formaPagamentoSelecionada}
-            >
-              <CreditCard size={16} color={defaultTheme["purple-500"]} />
-            </FormaPagamento>
-
-            <FormaPagamento descricao="cartão de débito">
-              <CreditCard size={16} color={defaultTheme["purple-500"]} />
-            </FormaPagamento>
-
-            <FormaPagamento descricao="dinheiro">
-              <Money size={16} color={defaultTheme["purple-500"]} />
-            </FormaPagamento>
+            {formasPagamento.map((forma) => {
+              return (
+                <FormaPagamento
+                  key={forma.formaPagamento}
+                  descricao={forma.formaPagamento}
+                  selecionada={formaPagamentoSelecionada}
+                >
+                  {renderCardOpcaoPagamento(forma)}
+                </FormaPagamento>
+              );
+            })}
           </CardsPagamento>
         </Pagamento>
       </Article>
