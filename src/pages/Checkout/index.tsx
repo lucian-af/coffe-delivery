@@ -12,33 +12,39 @@ import {
   Button,
   Resumo,
 } from "./styles";
-
 import { defaultTheme } from "../../styles/themes/default";
-import { useCallback, useState } from "react";
+import { useContext, useState } from "react";
 import { EnderecoForm } from "./components/EnderecoForm";
 import { FormaPagamento } from "./components/FormaPagamento";
 import { PedidoItem } from "./components/PedidoItem";
-import CafeAmericano from "../../assets/cardapio/Type=Americano.svg";
 import { currencyFormatterBR } from "../../helpers/CurrencyFormatter";
 import { useNavigate } from "react-router-dom";
 import {
   FormasPagamento,
   formasPagamento,
   OpcaoPagamento,
+  VALOR_ENTREGA,
 } from "../../data/data";
+import { PedidoContext } from "../../contexts/PedidoContext";
 
 export function Checkout() {
-  const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] =
-    useState(true);
+  const { pedido, formaPagamentoSelecionada, selecionarFormaPagamento } =
+    useContext(PedidoContext);
 
   const navigate = useNavigate();
+  const valorEntrega = currencyFormatterBR(VALOR_ENTREGA);
+  const itensPedido = pedido.item;
+  const existeFormaPagamentoSelecionada = !formaPagamentoSelecionada();
 
-  function handleRemoverItem(id: number) {
+  function handleRemoverItem(id: string) {
     // remover pedido item
     console.log(id);
   }
 
   function handleConfirmarPedido() {
+    // validar endereço
+    // validar forma de pagamento
+    // validar se existe itens
     navigate("/success", { replace: true });
   }
 
@@ -50,6 +56,26 @@ export function Checkout() {
       case FormasPagamento.Dinheiro:
         return <Money size={16} color={defaultTheme["purple-500"]} />;
     }
+  }
+
+  function valorTotalPedidoMaisEntregaFormatado(): string {
+    return currencyFormatterBR(
+      pedido.valorTotal ? pedido.valorTotal + VALOR_ENTREGA : 0
+    );
+  }
+
+  function valorTotalItensFormatado(): string {
+    return currencyFormatterBR(pedido.valorTotal);
+  }
+
+  function valorTotalItens(): number {
+    return pedido.valorTotal;
+  }
+
+  function handleSelecionarFormaPagamento(
+    formaPagamento: FormasPagamento
+  ): void {
+    selecionarFormaPagamento(formaPagamento);
   }
 
   return (
@@ -90,7 +116,10 @@ export function Checkout() {
                 <FormaPagamento
                   key={forma.formaPagamento}
                   descricao={forma.formaPagamento}
-                  selecionada={formaPagamentoSelecionada}
+                  formaPagamento={forma.formaPagamento}
+                  onClick={() =>
+                    handleSelecionarFormaPagamento(forma.formaPagamento)
+                  }
                 >
                   {renderCardOpcaoPagamento(forma)}
                 </FormaPagamento>
@@ -103,50 +132,42 @@ export function Checkout() {
       <Aside>
         <Titulo>Cafés selecionados</Titulo>
         <Items>
-          <PedidoItem
-            cafe={{
-              id: 1,
-              descricao: "Expresso Tradicional",
-              valor: 9.9,
-              imagem: CafeAmericano,
-            }}
-            quantidade={1}
-            removerItem={() => handleRemoverItem(1)}
-          />
-          <hr color={defaultTheme["gray-300"]} />
-          <PedidoItem
-            cafe={{
-              id: 2,
-              descricao: "Expresso Tradicional",
-              valor: 19.9,
-              imagem: CafeAmericano,
-            }}
-            quantidade={3}
-            removerItem={() => handleRemoverItem(2)}
-          />
-          <hr color={defaultTheme["gray-300"]} />
+          {itensPedido.map((item) => {
+            return (
+              <PedidoItem
+                key={item.id}
+                bebida={item.bebida}
+                quantidade={item.quantidade}
+              />
+            );
+          })}
+
           <div>
             <Resumo size="font_16" weight={400}>
               <h5>Total de itens</h5>
-              {/* TODO: alterar */}
-              <span>{currencyFormatterBR(29.7)}</span>
+              <span>{valorTotalItensFormatado()}</span>
             </Resumo>
-            <Resumo size="font_16" weight={400}>
-              <h5>Entrega</h5>
-              {/* TODO: alterar */}
-              <span>{currencyFormatterBR(3.5)}</span>
-            </Resumo>
+            {valorTotalItens() > 0 && (
+              <Resumo size="font_16" weight={400}>
+                <h5>Entrega</h5>
+                <span>{valorEntrega}</span>
+              </Resumo>
+            )}
             <Resumo
               size="font_20"
               weight={700}
               color={defaultTheme["brown-700"]}
             >
               <span>Total</span>
-              {/* TODO: alterar */}
-              <span>{currencyFormatterBR(33.2)}</span>
+              <span>{valorTotalPedidoMaisEntregaFormatado()}</span>
             </Resumo>
           </div>
-          <Button onClick={handleConfirmarPedido}>confirmar pedido</Button>
+          <Button
+            onClick={handleConfirmarPedido}
+            disabled={valorTotalItens() === 0}
+          >
+            confirmar pedido
+          </Button>
         </Items>
       </Aside>
     </Wrapper>

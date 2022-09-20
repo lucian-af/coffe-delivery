@@ -11,6 +11,21 @@ export const Container = styled.div`
     margin-top: 2.5rem;
   }
 
+  h1 {
+    font-family: ${(props) => props.theme["font-special"]};
+    font-size: ${(props) => props.theme["font-32"]};
+    font-weight: 800;
+    color: ${(props) => props.theme["orange-700"]};
+    line-height: 1.3;
+  }
+
+  span {
+    font-size: ${(props) => props.theme["font-20"]};
+    font-weight: 400;
+    line-height: 1.3;
+    color: ${(props) => props.theme["brown-700"]};
+  }
+
   @media only screen and (min-width: 299px) and (max-width: 1280px) {
     main {
       flex-direction: column;

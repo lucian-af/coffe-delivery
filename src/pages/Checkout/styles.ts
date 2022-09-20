@@ -132,8 +132,14 @@ export const Button = styled.button`
 
   cursor: pointer;
 
-  &:hover {
+  &:not(:disabled):hover {
     background: ${(props) => props.theme["orange-700"]};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: ${(props) => props.theme["gray-400"]};
+    color: ${(props) => props.theme["brown-300"]};
   }
 `;
 

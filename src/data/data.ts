@@ -194,3 +194,5 @@ export const formasPagamento: OpcaoPagamento[] = [
     formaPagamento: FormasPagamento.Dinheiro,
   },
 ];
+
+export const VALOR_ENTREGA = 3.5;

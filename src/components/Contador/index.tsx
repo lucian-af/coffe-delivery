@@ -15,16 +15,11 @@ export function Contador({
   aumentar,
   diminuir,
 }: ContadorProps) {
-  const [quantidade, setQuantidade] = useState(valor);
-
   function hanldeAumentar() {
-    setQuantidade((state) => state + 1);
     aumentar();
   }
 
   function handleDiminuir() {
-    if (!quantidade) return;
-    setQuantidade((state) => state - 1);
     diminuir();
   }
 
@@ -33,7 +28,7 @@ export function Contador({
       <Action>
         <Minus width={14} onClick={handleDiminuir} />
       </Action>
-      <Input>{quantidade}</Input>
+      <Input>{valor}</Input>
       <Action>
         <Plus width={14} onClick={hanldeAumentar} />
       </Action>

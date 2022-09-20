@@ -5,7 +5,7 @@ type FormatProps = {
 };
 
 export function currencyFormatterBR(value: number, format?: FormatProps) {
-  if (!Number(value)) return "";
+  if (!Number(value) && value !== 0) return "";
 
   let amount = new Intl.NumberFormat("pt-BR", {
     style: "currency",

@@ -1,19 +1,27 @@
-import { ReactElement } from "react";
+import { ButtonHTMLAttributes, ReactElement, useContext } from "react";
+import { PedidoContext } from "../../../../contexts/PedidoContext";
+import { FormasPagamento } from "../../../../data/data";
 import { Card } from "./styles";
 
-type FormaPagamentoProps = {
+interface FormaPagamentoProps extends ButtonHTMLAttributes<HTMLDivElement> {
   descricao: string;
-  selecionada?: boolean;
+  formaPagamento: FormasPagamento;
   children: ReactElement;
-};
+}
 
 export function FormaPagamento({
   descricao,
-  selecionada = false,
   children,
+  formaPagamento,
+  ...rest
 }: FormaPagamentoProps) {
+  const { formaPagamentoSelecionada } = useContext(PedidoContext);
+
   return (
-    <Card selecionado={selecionada}>
+    <Card
+      selecionado={formaPagamentoSelecionada() === formaPagamento}
+      {...rest}
+    >
       {children}
       <span>{descricao}</span>
     </Card>

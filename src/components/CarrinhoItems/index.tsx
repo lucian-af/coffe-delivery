@@ -1,20 +1,22 @@
 import { ShoppingCart } from "phosphor-react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { PedidoContext } from "../../contexts/PedidoContext";
 import { Carrinho, COLORS, TotalItens } from "./styles";
 
 type CarrinhoItemProps = {
   color?: keyof typeof COLORS;
-  mostrarTotalItens: boolean;
+  mostrarTotalItens?: boolean;
 };
 
 export function CarrinhoItems({
   color,
   mostrarTotalItens = true,
 }: CarrinhoItemProps) {
-  // TODO: usar context para mostrar total de itens
+  const { quantidadeTotalItens: quantidadeItens } = useContext(PedidoContext);
 
-  const itens = 3;
-
+  const itens = quantidadeItens();
+  const mostrarQuantidade = mostrarTotalItens && itens > 0;
   const path = itens ? "/checkout" : "/";
 
   return (
@@ -22,7 +24,7 @@ export function CarrinhoItems({
       <Carrinho color={color}>
         <ShoppingCart size={22} weight="fill" />
         <TotalItens
-          mostrarTotalItens={mostrarTotalItens}
+          mostrarTotalItens={mostrarQuantidade}
           title={itens.toString()}
         >
           {itens}

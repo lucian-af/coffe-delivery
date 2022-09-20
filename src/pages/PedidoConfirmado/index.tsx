@@ -1,9 +1,12 @@
 import { CurrencyDollar, MapPin, Timer } from "phosphor-react";
 import { Container, Info, Section } from "./styles";
 import BannerPedidoConfirmado from "../../assets/pedido_confirmado.svg";
+import { useContext } from "react";
+import { PedidoContext } from "../../contexts/PedidoContext";
 
 export function PedidoConfirmado() {
   // TODO: usar context para mostrar dados endereço e formaPagamento
+  const { formaPagamentoSelecionada } = useContext(PedidoContext);
   return (
     <Container>
       <h1>Uhu! Pedido Confirmado</h1>
@@ -37,7 +40,7 @@ export function PedidoConfirmado() {
             </span>
             <div>
               <p>Pagamento na entrega</p>
-              <strong>Cartão de Crédito</strong>
+              <strong>{formaPagamentoSelecionada()}</strong>
             </div>
           </Info>
         </Section>

@@ -14,47 +14,21 @@ import { Divulgacao } from "./components/Divulgacao";
 import { Contador } from "../../components/Contador";
 import { currencyFormatterBR } from "../../helpers/CurrencyFormatter";
 import { CarrinhoItems } from "../../components/CarrinhoItems";
-import {
-  Bebida,
-  bebidas,
-  Endereco,
-  FormasPagamento,
-  Pedido,
-  PedidoItem,
-} from "../../data/data";
-import { useReducer } from "react";
-import { pedidosReducer } from "../../reducers/reducer";
-import { adicionarPedidoItem } from "../../reducers/actions";
+import { Bebida, bebidas } from "../../data/data";
+import { useContext } from "react";
+import { PedidoContext } from "../../contexts/PedidoContext";
 
 export function Home() {
-  // TODO: mover para o contexto
-  const novoPedido: Pedido = {
-    id: new Date().getTime().toString(),
-    item: [],
-    valorTotal: 0,
-  };
-
-  // TODO: mover para o contexto
-  const [pedido, dispatchPedido] = useReducer(
-    pedidosReducer,
-    novoPedido,
-    () => {
-      return novoPedido;
-    }
-  );
+  const { pedido, adicionarPedidoItem, diminuirQuantidadePedidoItem } =
+    useContext(PedidoContext);
 
   function handleAdicionarItem(bebida: Bebida) {
-    dispatchPedido(
-      adicionarPedidoItem({
-        id: new Date().getTime().toString(),
-        bebida,
-        quantidade: 1,
-        valorTotal: 0,
-      } as PedidoItem)
-    );
+    adicionarPedidoItem(bebida);
   }
 
-  function handleRemoverItem(bebida: Bebida) {}
+  function handleRemoverItem(bebida: Bebida) {
+    diminuirQuantidadePedidoItem(bebida);
+  }
 
   return (
     <HomeContainer>
@@ -93,6 +67,10 @@ export function Home() {
                   {/* TODO: mudar isso */}
                   <form action="">
                     <Contador
+                      valor={
+                        pedido.item.find((item) => item.bebida.id === bebida.id)
+                          ?.quantidade
+                      }
                       aumentar={() => handleAdicionarItem(bebida)}
                       diminuir={() => handleRemoverItem(bebida)}
                     />
