@@ -21,6 +21,8 @@ export const defaultTheme = {
   white: "#FFF",
   "white-100": "#FAFAFA",
 
+  danger: "#F03",
+
   "font-special": "'Baloo 2', sans-serif",
   "font-default": "Roboto, sans-serif",
 

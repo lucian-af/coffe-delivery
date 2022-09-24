@@ -31,10 +31,10 @@ export type Bebida = {
 };
 
 export type Endereco = {
-  cep: number;
+  cep: string;
   logradouro: string;
   numero: string;
-  complemento: string;
+  complemento?: string;
   bairro: string;
   cidade: string;
   uf: string;

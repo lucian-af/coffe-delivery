@@ -1,12 +1,23 @@
 import { createContext, ReactNode, useEffect, useReducer } from "react";
-import { Bebida, FormasPagamento, Pedido } from "../data/data";
+import { Bebida, Endereco, FormasPagamento, Pedido } from "../data/data";
 import {
+  adicionarEnderecoAction,
   adicionarPedidoItemAction,
   diminuirQuantidadePedidoItemAction,
   removerItemAction,
   selecionarFormaPagamentoAction,
 } from "../reducers/actions";
 import { pedidosReducer } from "../reducers/reducer";
+
+type EnderecoData = {
+  cep: string;
+  logradouro: string;
+  numero: string;
+  complemento?: string;
+  bairro: string;
+  cidade: string;
+  uf: string;
+};
 
 type PedidoContextType = {
   pedido: Pedido;
@@ -16,6 +27,7 @@ type PedidoContextType = {
   quantidadeTotalItens: () => number;
   selecionarFormaPagamento: (formaPagamento: FormasPagamento) => void;
   formaPagamentoSelecionada: () => FormasPagamento;
+  adicionarEndereco: (endereco: EnderecoData) => void;
 };
 
 export const PedidoContext = createContext({} as PedidoContextType);
@@ -65,6 +77,20 @@ export function PedioContextProvider({ children }: PedidoContextProviderProps) {
     dispatch(removerItemAction(bebida));
   }
 
+  function adicionarEndereco(endereco: EnderecoData): void {
+    dispatch(
+      adicionarEnderecoAction({
+        cep: endereco.cep,
+        logradouro: endereco.logradouro,
+        numero: endereco.numero,
+        complemento: endereco.complemento,
+        bairro: endereco.bairro,
+        cidade: endereco.cidade,
+        uf: endereco.uf,
+      })
+    );
+  }
+
   useEffect(() => {
     const stateJSON = JSON.stringify(pedido);
 
@@ -81,6 +107,7 @@ export function PedioContextProvider({ children }: PedidoContextProviderProps) {
         quantidadeTotalItens,
         selecionarFormaPagamento,
         formaPagamentoSelecionada,
+        adicionarEndereco,
       }}
     >
       {children}

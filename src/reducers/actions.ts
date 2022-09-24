@@ -1,9 +1,10 @@
-import { Bebida, FormasPagamento } from "./../data/data";
+import { Bebida, Endereco, FormasPagamento } from "./../data/data";
 export enum ActionTypes {
   ADICIONAR_ITEM = "ADICIONAR_ITEM",
   DIMINUIR_QUANTIDADE_ITEM = "DIMINUIR_QUANTIDADE_ITEM",
   SELECIONAR_FORMA_PAGAMENTO = "SELECIONAR_FORMA_PAGAMENTO",
   REMOVER_ITEM = "REMOVER_ITEM",
+  ADICIONAR_ENDERECO = "ADICIONAR_ENDERECO",
 }
 
 export function adicionarPedidoItemAction(bebida: Bebida) {
@@ -40,6 +41,15 @@ export function removerItemAction(bebida: Bebida) {
     type: ActionTypes.REMOVER_ITEM,
     payload: {
       bebida,
+    },
+  };
+}
+
+export function adicionarEnderecoAction(endereco: Endereco) {
+  return {
+    type: ActionTypes.ADICIONAR_ENDERECO,
+    payload: {
+      endereco,
     },
   };
 }

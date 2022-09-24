@@ -9,6 +9,10 @@ export const Wrapper = styled.div`
   align-items: flex-start;
   justify-content: center;
 
+  form {
+    display: contents;
+  }
+
   @media only screen and (min-width: 299px) and (max-width: 1366px) {
     flex-direction: column;
     justify-content: flex-start;
