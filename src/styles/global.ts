@@ -20,7 +20,8 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;    
   }
 
-  body, input, textarea, button {
+  body, input, textarea, button, select,
+  option {
     font-family: ${(props) => props.theme["font-default"]};
     font-weight: 400;
     font-size: ${(props) => props.theme["font-16"]};

@@ -1,28 +1,31 @@
 import styled from "styled-components";
 
 export const Item = styled.div`
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 64px 1fr;
 
-  div:nth-child(2n) {
-    flex: 1;
+  color: ${(props) => props.theme["brown-700"]};
+  gap: 1rem;
+
+  section {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-
-    color: ${(props) => props.theme["brown-700"]};
+    gap: 0.75rem;
 
     div {
       display: flex;
-      flex-direction: row;
       gap: 0.5rem;
+
+      &:nth-child(2n-1) {
+        justify-content: space-between;
+      }
     }
   }
 
   img {
     width: 64px;
     height: 64px;
-    margin-right: 1.25rem;
+    margin-left: -0.25rem;
   }
 `;
 

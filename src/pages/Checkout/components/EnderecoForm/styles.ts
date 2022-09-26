@@ -56,6 +56,28 @@ export const Input = styled.div<InputProps>`
     border-radius: 4px;
 
     width: 100%;
+    text-transform: uppercase;
+
+    :not(:placeholder-shown) {
+      color: ${(props) => props.theme["brown-500"]};
+    }
+  }
+
+  select {
+    border: 1px solid ${(props) => props.theme["gray-300"]};
+
+    color: ${(props) => props.theme["brown-300"]};
+    background: ${(props) => props.theme["gray-200"]};
+
+    padding: 0.675rem;
+    border-radius: 4px;
+
+    width: 100%;
+    text-transform: uppercase;
+
+    option:disabled {
+      display: none;
+    }
 
     :not(:placeholder-shown) {
       color: ${(props) => props.theme["brown-500"]};

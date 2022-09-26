@@ -14,7 +14,7 @@ type PedidoItemProps = {
 
 export function PedidoItem({ bebida, quantidade }: PedidoItemProps) {
   const {
-    pedido,
+    pedidoItems,
     adicionarPedidoItem,
     diminuirQuantidadePedidoItem,
     removerItem,
@@ -25,7 +25,7 @@ export function PedidoItem({ bebida, quantidade }: PedidoItemProps) {
   }
 
   function handleRemoverQuantidadeItem(bebida: Bebida) {
-    const item = pedido.item.find((item) => item.bebida.id === bebida.id);
+    const item = pedidoItems.find((item) => item.bebida.id === bebida.id);
     if (item?.quantidade === 1) return;
 
     diminuirQuantidadePedidoItem(bebida);
@@ -39,8 +39,13 @@ export function PedidoItem({ bebida, quantidade }: PedidoItemProps) {
     <>
       <Item key={bebida.id}>
         <img src={bebida.imagem} alt="" />
-        <div>
-          <span>{bebida.nome}</span>
+        <section>
+          <div>
+            <span>{bebida.nome}</span>
+            <ValorItem>
+              {currencyFormatterBR(bebida.valor * quantidade)}
+            </ValorItem>
+          </div>
           <div>
             <Contador
               valor={quantidade}
@@ -53,8 +58,7 @@ export function PedidoItem({ bebida, quantidade }: PedidoItemProps) {
               Remover
             </Remover>
           </div>
-        </div>
-        <ValorItem>{currencyFormatterBR(bebida.valor * quantidade)}</ValorItem>
+        </section>
       </Item>
       <hr color={defaultTheme["gray-300"]} />
     </>

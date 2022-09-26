@@ -1,8 +1,20 @@
-import { createContext, ReactNode, useEffect, useReducer } from "react";
-import { Bebida, Endereco, FormasPagamento, Pedido } from "../data/data";
 import {
-  adicionarEnderecoAction,
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
+import {
+  Bebida,
+  FormasPagamento,
+  Pedido,
+  PedidoConfirmacao,
+  PedidoItem,
+} from "../data/data";
+import {
   adicionarPedidoItemAction,
+  confirmarPedidoAction,
   diminuirQuantidadePedidoItemAction,
   removerItemAction,
   selecionarFormaPagamentoAction,
@@ -20,14 +32,16 @@ type EnderecoData = {
 };
 
 type PedidoContextType = {
+  pedidoItems: PedidoItem[];
   pedido: Pedido;
+  pedidoConfirmado: PedidoConfirmacao | undefined;
   adicionarPedidoItem: (bebida: Bebida) => void;
   diminuirQuantidadePedidoItem: (bebida: Bebida) => void;
   removerItem: (bebida: Bebida) => void;
   quantidadeTotalItens: () => number;
   selecionarFormaPagamento: (formaPagamento: FormasPagamento) => void;
   formaPagamentoSelecionada: () => FormasPagamento;
-  adicionarEndereco: (endereco: EnderecoData) => void;
+  confirmarPedido: (endereco: EnderecoData) => void;
 };
 
 export const PedidoContext = createContext({} as PedidoContextType);
@@ -37,21 +51,31 @@ type PedidoContextProviderProps = {
 };
 
 export function PedioContextProvider({ children }: PedidoContextProviderProps) {
-  const novoPedido: Pedido = {
-    id: new Date().getTime().toString(),
-    item: [],
-    valorTotal: 0,
-  };
+  const [pedidoState, dispatch] = useReducer(
+    pedidosReducer,
+    {
+      pedidoItems: [],
+      pedido: {} as Pedido,
+    },
+    () => {
+      const storedPedidoAsJson = localStorage.getItem("@coffe-delivery:1.0.0");
 
-  const [pedido, dispatch] = useReducer(pedidosReducer, novoPedido, () => {
-    const storedPedidoAsJson = localStorage.getItem("@coffe-delivery:1.0.0");
+      if (storedPedidoAsJson) {
+        return JSON.parse(storedPedidoAsJson);
+      }
 
-    if (storedPedidoAsJson) {
-      return JSON.parse(storedPedidoAsJson);
+      return {
+        pedidoItems: [],
+        pedido: {} as Pedido,
+      };
     }
+  );
 
-    return novoPedido;
-  });
+  const { pedidoItems, pedido } = pedidoState;
+
+  const [pedidoConfirmado, setPedidoConfirmado] = useState(
+    {} as PedidoConfirmacao
+  );
 
   function adicionarPedidoItem(bebida: Bebida) {
     dispatch(adicionarPedidoItemAction(bebida));
@@ -62,11 +86,16 @@ export function PedioContextProvider({ children }: PedidoContextProviderProps) {
   }
 
   function quantidadeTotalItens(): number {
-    return pedido.item?.reduce((acc: number, next) => acc + next.quantidade, 0);
+    return (
+      pedidoItems.reduce(
+        (acc: number, next: PedidoItem) => acc + next.quantidade,
+        0
+      ) ?? 0
+    );
   }
 
   function formaPagamentoSelecionada(): FormasPagamento {
-    return pedido.formaPagamento!;
+    return pedido?.formaPagamento!;
   }
 
   function selecionarFormaPagamento(formaPagamento: FormasPagamento): void {
@@ -77,37 +106,33 @@ export function PedioContextProvider({ children }: PedidoContextProviderProps) {
     dispatch(removerItemAction(bebida));
   }
 
-  function adicionarEndereco(endereco: EnderecoData): void {
-    dispatch(
-      adicionarEnderecoAction({
-        cep: endereco.cep,
-        logradouro: endereco.logradouro,
-        numero: endereco.numero,
-        complemento: endereco.complemento,
-        bairro: endereco.bairro,
-        cidade: endereco.cidade,
-        uf: endereco.uf,
-      })
-    );
+  function confirmarPedido(endereco: EnderecoData): void {
+    setPedidoConfirmado({
+      endereco,
+      formaPagamento: pedido.formaPagamento,
+    } as PedidoConfirmacao);
+
+    dispatch(confirmarPedidoAction());
   }
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(pedido);
-
+    const stateJSON = JSON.stringify(pedidoState);
     localStorage.setItem("@coffe-delivery:1.0.0", stateJSON);
-  }, [pedido]);
+  }, [pedidoState]);
 
   return (
     <PedidoContext.Provider
       value={{
+        pedidoItems,
         pedido,
+        pedidoConfirmado,
         adicionarPedidoItem,
         diminuirQuantidadePedidoItem,
         removerItem,
         quantidadeTotalItens,
         selecionarFormaPagamento,
         formaPagamentoSelecionada,
-        adicionarEndereco,
+        confirmarPedido,
       }}
     >
       {children}

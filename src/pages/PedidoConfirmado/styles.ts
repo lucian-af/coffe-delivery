@@ -93,3 +93,9 @@ export const Info = styled.div<InfoProps>`
     align-items: center;
   }
 `;
+
+export const TextCapitalize = styled.div`
+  strong {
+    text-transform: capitalize;
+  }
+`;

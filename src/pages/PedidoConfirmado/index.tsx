@@ -3,10 +3,15 @@ import { Container, Info, Section } from "./styles";
 import BannerPedidoConfirmado from "../../assets/pedido_confirmado.svg";
 import { useContext } from "react";
 import { PedidoContext } from "../../contexts/PedidoContext";
+import { UF } from "../../data/data";
 
 export function PedidoConfirmado() {
-  // TODO: usar context para mostrar dados endereço e formaPagamento
-  const { formaPagamentoSelecionada } = useContext(PedidoContext);
+  const { pedidoConfirmado } = useContext(PedidoContext);
+
+  const estado = UF.find(
+    (uf) => uf.sigla === pedidoConfirmado?.endereco?.uf
+  )?.descricao;
+
   return (
     <Container>
       <h1>Uhu! Pedido Confirmado</h1>
@@ -20,9 +25,16 @@ export function PedidoConfirmado() {
             </span>
             <div>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{" "}
+                <strong>
+                  {pedidoConfirmado!.endereco?.logradouro},
+                  {pedidoConfirmado!.endereco?.numero}
+                </strong>
               </p>
-              <p>Farrapos - Porto Alegre, RS</p>
+              <p>
+                {pedidoConfirmado!.endereco?.cidade} - {estado},{" "}
+                {pedidoConfirmado!.endereco?.uf}
+              </p>
             </div>
           </Info>
           <Info backgroundIcon="orange-500">
@@ -40,7 +52,7 @@ export function PedidoConfirmado() {
             </span>
             <div>
               <p>Pagamento na entrega</p>
-              <strong>{formaPagamentoSelecionada()}</strong>
+              <strong>{pedidoConfirmado!.formaPagamento}</strong>
             </div>
           </Info>
         </Section>

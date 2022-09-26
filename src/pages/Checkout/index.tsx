@@ -23,6 +23,7 @@ import {
   FormasPagamento,
   formasPagamento,
   OpcaoPagamento,
+  UF,
   VALOR_ENTREGA,
 } from "../../data/data";
 import { PedidoContext } from "../../contexts/PedidoContext";
@@ -32,53 +33,59 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const enderecoFormValidationSchema = zod
   .object({
-    cep: zod.string().length(8, "O campo é obrigatório!"),
+    cep: zod.string().min(8, "O CEP deve conter 8 dígitos!"),
     logradouro: zod.string().min(3, "O campo é obrigatório!"),
     numero: zod.string().min(1, "O campo é obrigatório!"),
     complemento: zod
       .string()
-      .max(150, "Limite de caracteres atingido: 150")
+      .max(50, "Limite de caracteres atingido: 50")
       .optional(),
     bairro: zod.string().min(3, "O campo é obrigatório!"),
     cidade: zod.string().min(3, "O campo é obrigatório!"),
-    uf: zod.string().max(2, "O campo é obrigatório!"),
+    uf: zod.string().refine(
+      (val) => UF.find((uf) => uf.sigla === val),
+      () => ({
+        message: `UF não encontrada`,
+      })
+    ),
   })
   .required();
 
 type EnderecoFormData = zod.infer<typeof enderecoFormValidationSchema>;
 
 export function Checkout() {
-  const {
-    pedido,
-    formaPagamentoSelecionada,
-    selecionarFormaPagamento,
-    adicionarEndereco,
-  } = useContext(PedidoContext);
+  const { pedidoItems, pedido, selecionarFormaPagamento, confirmarPedido } =
+    useContext(PedidoContext);
 
   const navigate = useNavigate();
   const valorEntrega = currencyFormatterBR(VALOR_ENTREGA);
-  const itensPedido = pedido.item;
+  const podeConfirmarPedido = valorTotalItens() > 0 && pedido.formaPagamento;
   const enderecoForm = useForm<EnderecoFormData>({
     resolver: zodResolver(enderecoFormValidationSchema),
     defaultValues: {
-      cep: "",
-      logradouro: "",
-      numero: "",
-      complemento: "",
-      bairro: "",
-      cidade: "",
-      uf: "",
+      cep: pedido.endereco?.cep,
+      logradouro: pedido.endereco?.logradouro,
+      numero: pedido.endereco?.numero,
+      complemento: pedido.endereco?.complemento,
+      bairro: pedido.endereco?.bairro,
+      cidade: pedido.endereco?.cidade,
+      uf: pedido.endereco?.uf,
     },
   });
 
-  const { handleSubmit, reset } = enderecoForm;
+  const { handleSubmit } = enderecoForm;
 
-  function handleConfirmarPedido() {
-    // validar endereço
-    // validar forma de pagamento
-    // validar se existe itens
-    reset();
-    navigate("/success", { replace: true });
+  function handleConfirmarPedido(endereco: EnderecoFormData) {
+    const pedidoValido =
+      endereco &&
+      pedido.formaPagamento &&
+      pedidoItems.length > 0 &&
+      pedido.valorTotal > 0;
+
+    if (pedidoValido) {
+      confirmarPedido(endereco);
+      navigate("/success", { replace: true });
+    }
   }
 
   function renderCardOpcaoPagamento(opcaoPagamento: OpcaoPagamento) {
@@ -111,16 +118,9 @@ export function Checkout() {
     selecionarFormaPagamento(formaPagamento);
   }
 
-  function handleAdicionarEndereco(data: EnderecoFormData) {
-    const result = enderecoFormValidationSchema.safeParse(data);
-
-    if (result.success) adicionarEndereco(data);
-    else console.log(result.error);
-  }
-
   return (
     <Wrapper>
-      <form action="" onSubmit={handleSubmit(handleAdicionarEndereco)}>
+      <form action="" onSubmit={handleSubmit(handleConfirmarPedido)}>
         <Article>
           <Titulo>Complete seu pedido</Titulo>
 
@@ -176,7 +176,7 @@ export function Checkout() {
         <Aside>
           <Titulo>Cafés selecionados</Titulo>
           <Items>
-            {itensPedido.map((item) => {
+            {pedidoItems.map((item) => {
               return (
                 <PedidoItem
                   key={item.id}
@@ -206,7 +206,7 @@ export function Checkout() {
                 <span>{valorTotalPedidoMaisEntregaFormatado()}</span>
               </Resumo>
             </div>
-            <Button type="submit" disabled={valorTotalItens() === 0}>
+            <Button type="submit" disabled={!podeConfirmarPedido}>
               confirmar pedido
             </Button>
           </Items>

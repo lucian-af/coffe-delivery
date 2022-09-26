@@ -9,6 +9,7 @@ import {
   Opcao,
   OpcaoEscolher,
   Preco,
+  Action,
 } from "./styles";
 import { Divulgacao } from "./components/Divulgacao";
 import { Contador } from "../../components/Contador";
@@ -19,7 +20,7 @@ import { useContext } from "react";
 import { PedidoContext } from "../../contexts/PedidoContext";
 
 export function Home() {
-  const { pedido, adicionarPedidoItem, diminuirQuantidadePedidoItem } =
+  const { pedidoItems, adicionarPedidoItem, diminuirQuantidadePedidoItem } =
     useContext(PedidoContext);
 
   function handleAdicionarItem(bebida: Bebida) {
@@ -64,12 +65,12 @@ export function Home() {
                       })}
                     </span>
                   </Preco>
-                  {/* TODO: mudar isso */}
-                  <form action="">
+                  <Action>
                     <Contador
                       valor={
-                        pedido.item.find((item) => item.bebida.id === bebida.id)
-                          ?.quantidade
+                        pedidoItems?.find(
+                          (item) => item.bebida.id === bebida.id
+                        )?.quantidade ?? 0
                       }
                       aumentar={() => handleAdicionarItem(bebida)}
                       diminuir={() => handleRemoverItem(bebida)}
@@ -78,7 +79,7 @@ export function Home() {
                       color="purple-700"
                       mostrarTotalItens={false}
                     />
-                  </form>
+                  </Action>
                 </OpcaoEscolher>
               </Opcao>
             );

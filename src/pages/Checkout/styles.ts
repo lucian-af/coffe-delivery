@@ -89,6 +89,10 @@ const Base = styled.div`
   background: ${(props) => props.theme["gray-100"]};
 
   padding: 2.5rem;
+
+  @media only screen and (min-width: 299px) and (max-width: 900px) {
+    padding: 2rem 0.75rem;
+  }
 `;
 
 export const Endereco = styled(Base)``;

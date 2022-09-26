@@ -1,5 +1,4 @@
 import { Minus, Plus } from "phosphor-react";
-import { useState } from "react";
 import { Action, Container, Input } from "./styles";
 
 type ContadorProps = {

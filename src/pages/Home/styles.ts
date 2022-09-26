@@ -122,11 +122,11 @@ export const OpcaoEscolher = styled.div`
   align-items: center;
 
   padding: 0 1.5rem;
+`;
 
-  form {
-    display: flex;
-    gap: 0.5rem;
-  }
+export const Action = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 
 export const Preco = styled.div`

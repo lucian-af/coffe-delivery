@@ -25,7 +25,7 @@ export function CarrinhoItems({
         <ShoppingCart size={22} weight="fill" />
         <TotalItens
           mostrarTotalItens={mostrarQuantidade}
-          title={itens.toString()}
+          title={itens?.toString()}
         >
           {itens}
         </TotalItens>
